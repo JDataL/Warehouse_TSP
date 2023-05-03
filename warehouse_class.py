@@ -1,37 +1,42 @@
 from isle_class import *
 
 class warehouse:
-    def __init__(self):
-        self.FLOORPLAN = retrieve_floor_plan()
-        self.isle_codes = []
-        self.isle_objects = []
+    def __init__(self, floorplan, isle_codes, isle_objects):
+        self.FLOORPLAN = floorplan
+        self.isle_codes = isle_codes
+        self.isle_objects = isle_objects
 
-    def x(self):
+    def create_warehouse(cls):
+
+        csv_floorplan =  retrieve_floor_plan()
+        isle_codes = []
+        isle_objects = []
+
         new_matrix = []
         row_number = 0
 
-        for each_row in self.FLOORPLAN:
+        for each_row in csv_floorplan:
             new_matrix.append([])
 
             col_number = 0
 
             for each_col in each_row:
-                new_matrix[row_number].append(node.create_node(self.FLOORPLAN, row_number, col_number))
+                new_matrix[row_number].append(node.create_node(csv_floorplan, row_number, col_number))
 
                 if each_col != '0':
 
-                    if each_col not in self.isle_codes:
-                        self.isle_codes.append(each_col)
-                        self.isle_objects.append(isle(each_col))
+                    if each_col not in isle_codes:
+                        isle_codes.append(each_col)
+                        isle_objects.append(isle(each_col))
 
-                    index = self.isle_codes.index(each_col)
-                    self.isle_objects[index].NODE_POSITIONS.append((row_number,col_number))
+                    index = isle_codes.index(each_col)
+                    isle_objects[index].NODE_POSITIONS.append((row_number,col_number))
 
                     col_number += 1
             
             row_number += 1
 
-        self.FLOORPLAN = new_matrix
+        return cls(new_matrix, isle_codes, isle_objects)
 
     def display_isle_values(self):
         
